@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import * as bodyParser from 'body-parser';
 import { DataSource } from 'typeorm';
 import cors from 'cors';
+import router from '../routes/api.route';
 import { appConfig } from '../config/app.config';
 
 class App {
@@ -15,6 +16,7 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(cors());
+    this.app.use(router);
 
     await this.listen();
     await App.connectDatabase();
