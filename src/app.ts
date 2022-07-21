@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import * as bodyParser from 'body-parser';
 import { DataSource } from 'typeorm';
+import cors from 'cors';
 import { appConfig } from '../config/app.config';
 
 class App {
@@ -13,15 +14,13 @@ class App {
   public async start(): Promise<void> {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
-    this.listen();
-    await App.connectDatabase();
+    this.app.use(cors());
 
-    this.app.get('/', (req, res) => {
-      res.send('Hello World!');
-    });
+    await this.listen();
+    await App.connectDatabase();
   }
 
-  private listen(): void {
+  private async listen(): Promise<void> {
     this.app.listen(appConfig.port, () => {
       console.log(`App listening on port ${appConfig.port}`);
     });
