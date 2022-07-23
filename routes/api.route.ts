@@ -1,13 +1,26 @@
-import express, { Router } from 'express';
+import express, { Request, Response, Router } from 'express';
+import { Service } from 'typedi';
+import AuthController from '../src/controllers/auth.controller';
 
-const router: Router = express.Router();
+@Service()
+export default class ApiRoute {
+  private readonly router: Router;
 
-router.post('auth/registration');
-router.post('auth/login');
-router.post('auth/logout');
-router.get('auth/verify/:link');
-router.post('auth/forgot-password');
-router.post('auth/reset-password');
-router.get('auth/refresh');
+  constructor(private readonly authController: AuthController) {
+    this.router = express.Router();
+  }
 
-export default router;
+  public init() {
+    this.router.post('/auth/registration');
+    this.router.post('/auth/login', (req: Request, res: Response) =>
+      this.authController.login(req, res),
+    );
+    this.router.post('/auth/logout');
+    this.router.get('/auth/verify/:link');
+    this.router.post('/auth/forgot-password');
+    this.router.post('/auth/reset-password');
+    this.router.get('/auth/refresh');
+
+    return this.router;
+  }
+}

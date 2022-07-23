@@ -1,5 +1,7 @@
+import 'reflect-metadata';
 import 'dotenv/config';
+import { Container } from 'typedi';
 import App from './src/app';
 
-const server: App = new App();
-server.start();
+const app: App = Container.get(App);
+app.start();
