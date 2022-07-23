@@ -9,7 +9,7 @@
     "start:prod": "node dist/index",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint \"{src,config,test}/**/*.ts\" --fix",
-    "typeorm": "npm run build && typeorm-ts-node-commonjs -d config/typeorm-cli.config.ts",
+    "typeorm": "npm run build && typeorm-ts-node-commonjs -d toolkit/typeorm-cli.toolkit.ts",
     "migration:create": "npx typeorm migration:create",
     "migration:run": "npm run typeorm migration:run",
     "migration:revert": "npm run typeorm migration:revert",
@@ -32,7 +32,8 @@
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
-    "typeorm": "^0.3.7"
+    "typeorm": "^0.3.7",
+    "winston": "^3.8.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

@@ -1,12 +1,15 @@
 import express, { Request, Response, Router } from 'express';
-import { Service } from 'typedi';
+import { Inject, Service } from 'typedi';
 import AuthController from '../src/controllers/auth.controller';
 
 @Service()
 export default class ApiRoute {
+  @Inject()
+  private authController: AuthController;
+
   private readonly router: Router;
 
-  constructor(private readonly authController: AuthController) {
+  constructor() {
     this.router = express.Router();
   }
 

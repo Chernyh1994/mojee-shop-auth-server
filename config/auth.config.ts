@@ -1,5 +1,5 @@
 export type AuthConfigType = {
-  secret: string;
+  readonly secret: string;
 };
 
 export const authConfig: AuthConfigType = {
