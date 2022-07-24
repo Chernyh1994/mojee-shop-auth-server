@@ -22,7 +22,7 @@ export default function requestLoggerMiddleware(
     Object.keys(copyRequestBody).length === 0
       ? null
       : JSON.stringify(copyRequestBody);
-  const log = `method: ${requestMethod} | URL: ${requestUrl} | data: ${data}`;
+  const log = `${data} | method: ${requestMethod} | URL: ${requestUrl}`;
 
   logger.create.data(log);
 

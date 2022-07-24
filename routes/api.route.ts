@@ -1,5 +1,6 @@
 import express, { Request, Response, Router } from 'express';
 import { Inject, Service } from 'typedi';
+import asyncHandler from 'express-async-handler';
 import AuthController from '../src/controllers/auth.controller';
 
 @Service()
@@ -15,8 +16,11 @@ export default class ApiRoute {
 
   public init() {
     this.router.post('/auth/registration');
-    this.router.post('/auth/login', (req: Request, res: Response) =>
-      this.authController.login(req, res),
+    this.router.post(
+      '/auth/login',
+      asyncHandler((req: Request, res: Response) =>
+        this.authController.login(req, res),
+      ),
     );
     this.router.post('/auth/logout');
     this.router.get('/auth/verify/:link');

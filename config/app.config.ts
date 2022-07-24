@@ -9,7 +9,7 @@ export type AppConfigType = {
 };
 
 export const appConfig: AppConfigType = {
-  environment: process.env.APP_ENV || 'development',
+  environment: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.APP_PORT) || 3000,
   debug: process.env.APP_DEBUG === 'true',
   database: databaseConfig,
