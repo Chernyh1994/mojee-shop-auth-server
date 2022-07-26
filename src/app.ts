@@ -1,44 +1,39 @@
-import express, { Application, Router } from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
-import { Inject, Service } from 'typedi';
-import { DataSource } from 'typeorm';
-import ApiRoute from '../routes/api.route';
+import { loadControllers } from 'awilix-express';
+import { loadContainer } from './providers/service.provider';
 import { appConfig } from '../config/app.config';
 import WinstonLogger from '../toolkit/winston-logger.toolkit';
 import requestLoggerMiddleware from './middlewares/request-logger.middleware';
 import errorHandlerMiddleware from './middlewares/error-handler.middleware';
 
-@Service()
 export default class App {
-  @Inject()
-  private apiRoute: ApiRoute;
-
-  @Inject()
   private logger: WinstonLogger;
 
-  private app: Application;
+  private readonly app: Application;
 
   constructor() {
     this.app = express();
+    this.logger = new WinstonLogger();
   }
 
   public async start(): Promise<void> {
     this.middlewareHandler();
     this.listen();
-    await this.connectDatabase();
     this.uncaughtException();
     this.unhandledRejection();
   }
 
   private middlewareHandler(): void {
-    const routers: Router = this.apiRoute.init();
-
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
     this.app.use(cors());
     this.app.use(requestLoggerMiddleware);
-    this.app.use(routers);
+    loadContainer(this.app);
+    this.app.use(
+      loadControllers('controllers/**{.ts,.js}', { cwd: __dirname }),
+    );
     this.app.use(errorHandlerMiddleware);
   }
 
@@ -46,12 +41,6 @@ export default class App {
     this.app.listen(appConfig.port, () => {
       this.logger.create.info(`App listening on port ${appConfig.port}.`);
     });
-  }
-
-  private async connectDatabase(): Promise<void> {
-    const connectionSource: DataSource = new DataSource(appConfig.database);
-    await connectionSource.initialize();
-    this.logger.create.info('Connected to database.');
   }
 
   private uncaughtException(): void {

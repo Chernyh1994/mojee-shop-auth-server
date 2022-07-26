@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { Container } from 'typedi';
-import HttpException from '../exceptions/http.exception';
+import HttpException from '../exceptions/http/http.exception';
 import WinstonLogger from '../../toolkit/winston-logger.toolkit';
-import { HttpStatusCode } from '../exceptions/enums/http-startus-code.enum';
+import { HttpStatusCode } from '../exceptions/http/enums/http-startus-code.enum';
 
-const logger: WinstonLogger = Container.get(WinstonLogger);
+const logger: WinstonLogger = new WinstonLogger();
 
 export default function errorHandlerMiddleware(
   error: Error,

@@ -1,5 +1,4 @@
 import * as winston from 'winston';
-import { Service } from 'typedi';
 import {
   CliConfigSetColors,
   CliConfigSetLevels,
@@ -7,7 +6,6 @@ import {
 import { Format } from 'logform';
 import { appConfig } from '../config/app.config';
 
-@Service()
 export default class WinstonLogger {
   public get create() {
     WinstonLogger.addColors();

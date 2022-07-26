@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { Container } from 'typedi';
 import WinstonLogger from '../../toolkit/winston-logger.toolkit';
 
-const logger: WinstonLogger = Container.get(WinstonLogger);
+const logger: WinstonLogger = new WinstonLogger();
 
 export default function requestLoggerMiddleware(
   request: Request,

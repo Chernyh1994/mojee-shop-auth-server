@@ -1,10 +1,9 @@
-import { Service } from 'typedi';
-import ForbiddenException from '../exceptions/forbidden.exception';
+import UserRepository from '../repositories/user.repository';
 
-@Service()
 export default class AuthService {
-  public async login(test): Promise<string> {
-    throw new ForbiddenException('test exception.');
-    return test + 'test API point';
+  constructor(private userRepository: UserRepository) {}
+
+  public async login(): Promise<any> {
+    return await this.userRepository.findAll();
   }
 }
