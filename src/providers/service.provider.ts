@@ -16,7 +16,7 @@ const Container = createContainer<IContainer>({
   injectionMode: InjectionMode.CLASSIC,
 });
 
-export const loadContainer = (app: Application): void => {
+export const containerSetup = (app: Application): void => {
   Container.register({
     authService: asClass(AuthService).scoped(),
 

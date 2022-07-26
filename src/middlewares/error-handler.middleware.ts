@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import HttpException from '../exceptions/http/http.exception';
-import WinstonLogger from '../../toolkit/winston-logger.toolkit';
 import { HttpStatusCode } from '../exceptions/http/enums/http-startus-code.enum';
-
-const logger: WinstonLogger = new WinstonLogger();
+import { logger } from '../../toolkit/winston-logger.toolkit';
 
 export default function errorHandlerMiddleware(
   error: Error,
@@ -39,7 +37,7 @@ export default function errorHandlerMiddleware(
     message,
   )} | method: ${methodName} | data: ${data}`;
 
-  logger.create.error(log);
+  logger.error(log);
 
   response.status(status).json(message);
 }

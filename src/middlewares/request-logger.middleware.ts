@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import WinstonLogger from '../../toolkit/winston-logger.toolkit';
-
-const logger: WinstonLogger = new WinstonLogger();
+import { logger } from '../../toolkit/winston-logger.toolkit';
 
 export default function requestLoggerMiddleware(
   request: Request,
@@ -23,7 +21,7 @@ export default function requestLoggerMiddleware(
       : JSON.stringify(copyRequestBody);
   const log = `${data} | method: ${requestMethod} | URL: ${requestUrl}`;
 
-  logger.create.data(log);
+  logger.data(log);
 
   next();
 }
