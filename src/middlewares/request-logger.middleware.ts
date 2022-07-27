@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '../../toolkit/winston-logger.toolkit';
+import { logger } from '../commons/toolkit/winston-logger.toolkit';
 
 export default function requestLoggerMiddleware(
   request: Request,

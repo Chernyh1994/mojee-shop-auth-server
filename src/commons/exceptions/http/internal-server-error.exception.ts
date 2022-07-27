@@ -1,5 +1,5 @@
 import HttpException from './http.exception';
-import { HttpStatusCode } from './enums/http-startus-code.enum';
+import { HttpStatusCode } from '../../enums/http-startus-code.enum';
 
 export default class InternalServerErrorException extends HttpException {
   public status: HttpStatusCode;

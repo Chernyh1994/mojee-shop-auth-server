@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import HttpException from '../exceptions/http/http.exception';
-import { HttpStatusCode } from '../exceptions/http/enums/http-startus-code.enum';
-import { logger } from '../../toolkit/winston-logger.toolkit';
+import HttpException from '../commons/exceptions/http/http.exception';
+import { HttpStatusCode } from '../commons/enums/http-startus-code.enum';
+import { logger } from '../commons/toolkit/winston-logger.toolkit';
 
 export default function errorHandlerMiddleware(
   error: Error,

@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 import { loadControllers } from 'awilix-express';
 import { containerSetup } from './providers/service.provider';
 import { appConfig } from '../config/app.config';
-import { logger } from '../toolkit/winston-logger.toolkit';
+import { logger } from './commons/toolkit/winston-logger.toolkit';
 import requestLoggerMiddleware from './middlewares/request-logger.middleware';
 import errorHandlerMiddleware from './middlewares/error-handler.middleware';
 
@@ -23,7 +23,7 @@ export default class App {
     this.app.use(requestLoggerMiddleware);
     containerSetup(this.app);
     this.app.use(
-      loadControllers('controllers/**{.ts,.js}', { cwd: __dirname }),
+      loadControllers('http/controllers/**{.ts,.js}', { cwd: __dirname }),
     );
     this.app.use(errorHandlerMiddleware);
   }

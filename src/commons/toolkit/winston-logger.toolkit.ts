@@ -5,7 +5,7 @@ import {
   CliConfigSetColors,
   CliConfigSetLevels,
 } from 'winston/lib/winston/config';
-import { appConfig } from '../config/app.config';
+import { appConfig } from '../../../config/app.config';
 
 const configSetLevels: CliConfigSetLevels = {
   error: 0,

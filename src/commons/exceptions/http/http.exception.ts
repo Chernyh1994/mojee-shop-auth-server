@@ -1,4 +1,4 @@
-import { HttpStatusCode } from './enums/http-startus-code.enum';
+import { HttpStatusCode } from '../../enums/http-startus-code.enum';
 
 export default abstract class HttpException extends Error {
   abstract status: HttpStatusCode;

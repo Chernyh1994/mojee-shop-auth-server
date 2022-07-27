@@ -1,14 +1,9 @@
-import RepositoryInterface from './contracts/repository.interface';
 import { Knex } from 'knex';
-import { User } from '../entity/user.entity';
+import BaseRepository from './base.repository';
+import { UserEntity } from '../entity/user.entity';
 
-export default class UserRepository implements RepositoryInterface<User> {
-  constructor(private db: Knex) {}
-
-  public async findAll(): Promise<User[]> {
-    return this.db<User>('users').select({
-      id: 'id',
-      email: 'email',
-    });
+export default class UserRepository extends BaseRepository<UserEntity> {
+  constructor(private database: Knex) {
+    super(database, 'users');
   }
 }
