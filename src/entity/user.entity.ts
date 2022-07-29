@@ -1,12 +1,11 @@
 export interface UserEntity {
   id: number;
-  firstName: string;
   email: string;
   password: string;
-  age: number;
+  is_verified: boolean;
+  is_deleted: boolean;
+  profile_id: number;
   role_id: number;
-  token_id: number;
-  isDeleted: boolean;
   created_at: Date;
   updated_at: Date;
 }
