@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { GET, POST, route } from 'awilix-express';
 import AuthService from '../../services/auth.service';
+import { HttpStatusCode } from '../../commons/enums/http-startus-code.enum';
 
 @route('/auth')
 export default class AuthController {
@@ -9,14 +10,15 @@ export default class AuthController {
   @route('/registration')
   @POST()
   public async registration(req: Request, res: Response): Promise<void> {
-    res.status(200).json('ddd');
+    const data = await this.authService.registration(req.body);
+    res.status(HttpStatusCode.CREATED).json(data);
   }
 
   @route('/login')
   @POST()
   public async login(req: Request, res: Response): Promise<void> {
-    const test = await this.authService.login(req);
-    res.status(200).json(test);
+    const data = await this.authService.login(req.body);
+    res.status(HttpStatusCode.OK).json(data);
   }
 
   @route('/logout')

@@ -1,8 +1,10 @@
 export class CreateUserDto {
-  readonly firstName: string;
   readonly email: string;
   password: string;
-  readonly age: number;
-  role_id?: number;
-  token_id: string;
+  is_verified: boolean;
+  is_deleted: boolean;
+  role_id: number;
+  readonly profile_id: number;
+  readonly created_at: Date;
+  readonly updated_at: Date;
 }

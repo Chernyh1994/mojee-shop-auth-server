@@ -5,5 +5,5 @@ export default interface RepositoryInterface<Entity> {
 
   create(createEntityDto: Omit<Entity, 'id'>): Promise<Entity>;
 
-  update(id: number, updateEntityDto: Partial<Entity>): Promise<boolean>;
+  update(id: number, updateEntityDto: Partial<Entity>): Promise<Entity>;
 }
