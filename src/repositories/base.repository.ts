@@ -27,10 +27,15 @@ export default abstract class BaseRepository<Entity>
     return output as Promise<Entity>;
   }
 
-  public update(
+  public async update(
     id: number,
     updateEntityDto: Partial<Entity>,
-  ): Promise<boolean> {
-    return this.qb.where(id).update(updateEntityDto);
+  ): Promise<Entity> {
+    const [output] = await this.qb
+      .where({ id })
+      .update(updateEntityDto)
+      .returning('*');
+
+    return output as Promise<Entity>;
   }
 }
