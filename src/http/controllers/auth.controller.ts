@@ -11,6 +11,10 @@ export default class AuthController {
   @POST()
   public async registration(req: Request, res: Response): Promise<void> {
     const data = await this.authService.registration(req.body);
+    res.cookie('refreshToken', data.refresh_token, {
+      maxAge: 30 * 24 * 60,
+      httpOnly: true,
+    });
     res.status(HttpStatusCode.CREATED).json(data);
   }
 
@@ -18,6 +22,10 @@ export default class AuthController {
   @POST()
   public async login(req: Request, res: Response): Promise<void> {
     const data = await this.authService.login(req.body);
+    res.cookie('refreshToken', data.refresh_token, {
+      maxAge: 30 * 24 * 60,
+      httpOnly: true,
+    });
     res.status(HttpStatusCode.OK).json(data);
   }
 

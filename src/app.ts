@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import { loadControllers } from 'awilix-express';
@@ -19,6 +20,7 @@ export default class App {
   private middlewareHandler(): void {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
+    this.app.use(cookieParser());
     this.app.use(cors());
     this.app.use(requestLoggerMiddleware);
     containerSetup(this.app);
