@@ -108,6 +108,45 @@ export default class AuthService {
     return { access_token: accessToken, refresh_token: refreshToken };
   }
 
+  public async forgotPassword(email: string) {
+    const user: UserEntity = await this.userService.findUserByEmail(email);
+
+    if (!user) {
+      throw new ForbiddenException('User not found.');
+    }
+
+    const encodeResetLink: string = this.cryptoService.encrypt(
+      JSON.stringify({ userId: user.id }),
+      appConfig.secret,
+      appConfig.iv,
+    );
+    const resetUrl = `${appConfig.url}/auth/password-reset/${encodeResetLink}`;
+    await this.mailService.sendVerificationLink(user.email, resetUrl);
+
+    return { data: 'Email for reset password send.' };
+  }
+
+  public async passwordReset(reset: string, password: string) {
+    const decodeVerify: string = this.cryptoService.decrypt(
+      reset,
+      appConfig.secret,
+      appConfig.iv,
+    );
+
+    const { userId }: { userId: number } = await JSON.parse(decodeVerify);
+
+    const user: UserEntity = await this.userService.changePassword(
+      userId,
+      password,
+    );
+
+    if (!user) {
+      throw new ForbiddenException('Error change password.');
+    }
+
+    return { data: 'Password successes changed.' };
+  }
+
   private static async checkPassword(
     password: string,
     hashPassword: string,

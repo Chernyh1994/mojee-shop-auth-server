@@ -66,9 +66,19 @@ export default class AuthController {
     res.status(HttpStatusCode.OK).json(data);
   }
 
-  @route('/password-forgot')
-  @GET()
-  public async passwordForgot(req: Request, res: Response): Promise<void> {
-    res.status(HttpStatusCode.OK).json('ddd');
+  @route('/forgot-password')
+  @POST()
+  public async forgotPassword(req: Request, res: Response): Promise<void> {
+    const data: { [key: string]: string } =
+      await this.authService.forgotPassword(req.body.email);
+    res.status(HttpStatusCode.OK).json(data);
+  }
+
+  @route('/password-reset/:link')
+  @POST()
+  public async passwordReset(req: Request, res: Response): Promise<void> {
+    const data: { [key: string]: string } =
+      await this.authService.passwordReset(req.params.link, req.body.password);
+    res.status(HttpStatusCode.OK).json(data);
   }
 }

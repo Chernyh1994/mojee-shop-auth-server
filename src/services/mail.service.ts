@@ -32,4 +32,18 @@ export default class MailService {
       headers: { priority: 'high' },
     });
   }
+
+  public async sendResetPassword(
+    emailTo: string,
+    restUrl: string,
+  ): Promise<void> {
+    await this.transport.sendMail({
+      from: '"TEST" <test@test.com>',
+      to: emailTo,
+      subject: 'ResetPassword.',
+      text: 'TEST TEXT.',
+      html: `<div><h1>Please, use this link.</h1><a href="${restUrl}">${restUrl}</a></div>`,
+      headers: { priority: 'high' },
+    });
+  }
 }

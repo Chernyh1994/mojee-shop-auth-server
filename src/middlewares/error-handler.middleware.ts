@@ -9,6 +9,7 @@ export default function errorHandlerMiddleware(
   response: Response,
   next: NextFunction,
 ) {
+  console.log(error)
   let status: HttpStatusCode = HttpStatusCode.INTERNAL_SERVER_ERROR;
   let message: { status: HttpStatusCode; error: string } = {
     status,
