@@ -10,7 +10,9 @@ export default class AuthController {
   @route('/registration')
   @POST()
   public async registration(req: Request, res: Response): Promise<void> {
-    const data = await this.authService.registration(req.body);
+    const data: { [key: string]: string } = await this.authService.registration(
+      req.body,
+    );
     res.cookie('refreshToken', data.refresh_token, {
       maxAge: 30 * 24 * 60,
       httpOnly: true,
@@ -21,7 +23,9 @@ export default class AuthController {
   @route('/login')
   @POST()
   public async login(req: Request, res: Response): Promise<void> {
-    const data = await this.authService.login(req.body);
+    const data: { [key: string]: string } = await this.authService.login(
+      req.body,
+    );
     res.cookie('refreshToken', data.refresh_token, {
       maxAge: 30 * 24 * 60,
       httpOnly: true,
@@ -38,7 +42,10 @@ export default class AuthController {
   @route('/verify/:link')
   @GET()
   public async verify(req: Request, res: Response): Promise<void> {
-    res.status(HttpStatusCode.OK).json('ddd');
+    const data: { [key: string]: string } = await this.authService.verifyUser(
+      req.params.link,
+    );
+    res.status(HttpStatusCode.OK).json(data);
   }
 
   @route('/refresh')

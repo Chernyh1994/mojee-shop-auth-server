@@ -3,4 +3,6 @@ export type AppConfigType = {
   readonly port: number;
   readonly debug: boolean;
   readonly url: string;
+  readonly secret: string;
+  readonly iv: string;
 };

@@ -21,14 +21,14 @@ export default class MailService {
 
   public async sendVerificationLink(
     emailTo: string,
-    link: string,
+    verifyUrl: string,
   ): Promise<void> {
     await this.transport.sendMail({
       from: '"TEST" <test@test.com>',
       to: emailTo,
       subject: 'Verification email.',
       text: 'TEST TEXT.',
-      html: `<div><h1>Please, verify your account.</h1><a href="${link}">${link}</a></div>`,
+      html: `<div><h1>Please, verify your account.</h1><a href="${verifyUrl}">${verifyUrl}</a></div>`,
       headers: { priority: 'high' },
     });
   }

@@ -34,6 +34,16 @@ export default class UserService {
     return await this.userRepository.findOne({ email });
   }
 
+  public async verifyUser(id: number): Promise<UserEntity> {
+    const user: UserEntity = await this.userRepository.findOne({ id });
+
+    if (!user) {
+      throw new ForbiddenException('User not found.');
+    }
+
+    return await this.userRepository.update(id, { is_verified: true });
+  }
+
   private static async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt();
 
