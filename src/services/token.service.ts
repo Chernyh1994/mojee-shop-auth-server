@@ -5,6 +5,7 @@ import { authConfig } from '../../config/auth.config';
 import { CreateRefreshTokenDto } from '../commons/dto/create-refresh-token.dto';
 import { TokenEntity } from '../entity/token.entity';
 import CryptoService from './crypto.service';
+import ForbiddenException from '../commons/exceptions/http/forbidden.exception';
 
 export default class TokenService {
   constructor(
@@ -69,5 +70,41 @@ export default class TokenService {
     return await this.tokenRepository.delete({
       refresh_token: decryptRefreshToken,
     });
+  }
+
+  public async validRefreshToken(cryptoRefreshToken: string) {
+    const decryptRefreshToken: string = this.cryptoService.decrypt(
+      cryptoRefreshToken,
+      authConfig.secretRefresh,
+      authConfig.ivRefresh,
+    );
+
+    const refreshTokens: TokenEntity = await this.tokenRepository.findOne({
+      refresh_token: decryptRefreshToken,
+    });
+
+    if (!refreshTokens || refreshTokens.expires_in <= new Date()) {
+      throw new ForbiddenException('Unauthorized.');
+    }
+
+    const accessToken = this.generateJwtAccessToken(refreshTokens.user_id);
+
+    const refreshTokenData: any = {
+      user_id: refreshTokens.user_id,
+      refresh_token: uuidv4(),
+      expires_in: authConfig.expireInRefresh,
+    };
+
+    const tokenEntity: TokenEntity = await this.tokenRepository.update(
+      refreshTokens.id,
+      refreshTokenData,
+    );
+    const refreshToken = this.cryptoService.encrypt(
+      tokenEntity.refresh_token,
+      authConfig.secretRefresh,
+      authConfig.ivRefresh,
+    );
+
+    return { accessToken, refreshToken };
   }
 }

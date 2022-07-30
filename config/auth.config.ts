@@ -7,6 +7,6 @@ export const authConfig: AuthConfigType = {
   secretAccess: process.env.JWT_ACCESS_SECRET,
   secretRefresh: process.env.REFRESH_TOKEN_SECRET,
   ivRefresh: process.env.REFRESH_TOKEN_IV,
-  expireInAccess: '1m',
+  expireInAccess: '60m',
   expireInRefresh: expireDate,
 };

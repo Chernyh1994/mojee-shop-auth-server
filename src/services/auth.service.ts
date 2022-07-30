@@ -97,6 +97,17 @@ export default class AuthService {
     return { data: 'User has been verified.' };
   }
 
+  public async refresh(encryptRefreshToken: string) {
+    if (!encryptRefreshToken) {
+      throw new ForbiddenException('Unauthorized.');
+    }
+
+    const { accessToken, refreshToken }: any =
+      await this.tokenService.validRefreshToken(encryptRefreshToken);
+
+    return { access_token: accessToken, refresh_token: refreshToken };
+  }
+
   private static async checkPassword(
     password: string,
     hashPassword: string,

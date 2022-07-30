@@ -55,18 +55,20 @@ export default class AuthController {
   @route('/refresh')
   @GET()
   public async refresh(req: Request, res: Response): Promise<void> {
-    res.status(HttpStatusCode.OK).json('ddd');
+    const { refreshToken }: { refreshToken: string } = req.cookies;
+    const data: { [key: string]: string } = await this.authService.refresh(
+      refreshToken,
+    );
+    res.cookie('refreshToken', data.refresh_token, {
+      maxAge: 30 * 24 * 60,
+      httpOnly: true,
+    });
+    res.status(HttpStatusCode.OK).json(data);
   }
 
   @route('/password-forgot')
   @GET()
   public async passwordForgot(req: Request, res: Response): Promise<void> {
-    res.status(HttpStatusCode.OK).json('ddd');
-  }
-
-  @route('/password-reset')
-  @POST()
-  public async passwordReset(req: Request, res: Response): Promise<void> {
     res.status(HttpStatusCode.OK).json('ddd');
   }
 }
