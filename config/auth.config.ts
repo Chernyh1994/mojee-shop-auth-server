@@ -1,10 +1,5 @@
-export type AuthConfigType = {
-  readonly secretAccess: string;
-  readonly secretRefresh: string;
-  readonly ivRefresh: string;
-  readonly expireInAccess: string;
-  readonly expireInRefresh: Date;
-};
+import { AuthConfigType } from '../src/commons/types/auth-config.type';
+
 const dateNow: Date = new Date();
 const expireDate: Date = new Date(dateNow.setMonth(dateNow.getMonth() + 1));
 
