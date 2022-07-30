@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 import UserService from './user.service';
 import TokenService from './token.service';
 import MailService from './mail.service';
@@ -6,6 +7,7 @@ import { UserEntity } from '../entity/user.entity';
 import { CreateUserDto } from '../commons/dto/create-user.dto';
 import { LoginUserDto } from '../commons/dto/login-user.dto';
 import ForbiddenException from '../commons/exceptions/http/forbidden.exception';
+import { appConfig } from '../../config/app.config';
 
 export default class AuthService {
   constructor(
@@ -18,6 +20,8 @@ export default class AuthService {
     credentials: CreateUserDto,
   ): Promise<{ access_token: string; refresh_token: string }> {
     const user: UserEntity = await this.userService.createUser(credentials);
+    const verifyLink = `${appConfig.url}/auth/verify/${uuidv4()}`;
+    await this.mailService.sendVerificationLink(user.email, verifyLink);
     const accessToken: string = this.tokenService.generateJwtAccessToken(
       user.id,
     );

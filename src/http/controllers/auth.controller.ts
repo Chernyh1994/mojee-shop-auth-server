@@ -32,30 +32,30 @@ export default class AuthController {
   @route('/logout')
   @POST()
   public async logout(req: Request, res: Response): Promise<void> {
-    res.status(200).json('ddd');
+    res.status(HttpStatusCode.OK).json('ddd');
   }
 
   @route('/verify/:link')
   @GET()
   public async verify(req: Request, res: Response): Promise<void> {
-    res.status(200).json('ddd');
-  }
-
-  @route('/password-forgot')
-  @GET()
-  public async passwordForgot(req: Request, res: Response): Promise<void> {
-    res.status(200).json('ddd');
-  }
-
-  @route('/password-reset')
-  @POST()
-  public async passwordReset(req: Request, res: Response): Promise<void> {
-    res.status(200).json('ddd');
+    res.status(HttpStatusCode.OK).json('ddd');
   }
 
   @route('/refresh')
   @GET()
   public async refresh(req: Request, res: Response): Promise<void> {
-    res.status(200).json('ddd');
+    res.status(HttpStatusCode.OK).json('ddd');
+  }
+
+  @route('/password-forgot')
+  @GET()
+  public async passwordForgot(req: Request, res: Response): Promise<void> {
+    res.status(HttpStatusCode.OK).json('ddd');
+  }
+
+  @route('/password-reset')
+  @POST()
+  public async passwordReset(req: Request, res: Response): Promise<void> {
+    res.status(HttpStatusCode.OK).json('ddd');
   }
 }
