@@ -58,4 +58,16 @@ export default class TokenService {
 
     return refreshToken;
   }
+
+  public async deleteRefreshToken(cryptoRefreshToken: string) {
+    const decryptRefreshToken: string = this.cryptoService.decrypt(
+      cryptoRefreshToken,
+      authConfig.secretRefresh,
+      authConfig.ivRefresh,
+    );
+
+    return await this.tokenRepository.delete({
+      refresh_token: decryptRefreshToken,
+    });
+  }
 }

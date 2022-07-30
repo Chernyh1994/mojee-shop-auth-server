@@ -38,4 +38,8 @@ export default abstract class BaseRepository<Entity>
 
     return output as Promise<Entity>;
   }
+
+  public delete(id: number | Partial<Entity>): Promise<boolean> {
+    return this.qb.where(id).del();
+  }
 }

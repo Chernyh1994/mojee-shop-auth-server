@@ -68,10 +68,16 @@ export default class AuthService {
     return { access_token: accessToken, refresh_token: refreshToken };
   }
 
-  public async logout() {
-    //check token
-    //remove refresh token
-    //return true or exception
+  public async logout(refreshToken: string) {
+    const isDeleted: boolean = await this.tokenService.deleteRefreshToken(
+      refreshToken,
+    );
+
+    if (!isDeleted) {
+      throw new ForbiddenException('Error logout.');
+    }
+
+    return { data: 'Logout success.' };
   }
 
   public async verifyUser(verify: string): Promise<{ data: string }> {

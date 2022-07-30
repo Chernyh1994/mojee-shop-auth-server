@@ -36,7 +36,11 @@ export default class AuthController {
   @route('/logout')
   @POST()
   public async logout(req: Request, res: Response): Promise<void> {
-    res.status(HttpStatusCode.OK).json('ddd');
+    const { refreshToken }: { refreshToken: string } = req.cookies;
+    const data: { [key: string]: string } = await this.authService.logout(
+      refreshToken,
+    );
+    res.status(HttpStatusCode.OK).json(data);
   }
 
   @route('/verify/:link')
