@@ -2,16 +2,16 @@ import { asClass, asValue, createContainer, InjectionMode } from 'awilix';
 import { scopePerRequest } from 'awilix-express';
 import { Application } from 'express';
 import { Knex } from 'knex';
-import db from '../commons/toolkit/knex.toolkit';
-import AuthService from '../services/auth.service';
-import UserRepository from '../repositories/user.repository';
-import MailService from '../services/mail.service';
-import TokenService from '../services/token.service';
-import UserService from '../services/user.service';
-import RoleService from '../services/role.service';
-import CryptoService from '../services/crypto.service';
-import TokenRepository from '../repositories/token.repository';
-import RoleRepository from '../repositories/role.repository';
+import db from '../toolkit/knex.toolkit';
+import AuthService from '../../services/auth.service';
+import UserRepository from '../../repositories/user.repository';
+import MailService from '../../services/mail.service';
+import TokenService from '../../services/token.service';
+import UserService from '../../services/user.service';
+import RoleService from '../../services/role.service';
+import CryptoService from '../../services/crypto.service';
+import TokenRepository from '../../repositories/token.repository';
+import RoleRepository from '../../repositories/role.repository';
 
 interface IContainer {
   authService: AuthService;

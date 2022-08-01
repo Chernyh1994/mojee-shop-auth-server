@@ -1,7 +1,12 @@
 import { Request, Response } from 'express';
 import { GET, POST, route } from 'awilix-express';
-import AuthService from '../../services/auth.service';
 import { HttpStatusCode } from '../../commons/enums/http-startus-code.enum';
+import { ValidationBody } from '../../commons/decorators/validation.decorator';
+import { LoginRequest } from '../requests/auth/login.request';
+import { RegistrationRequest } from '../requests/auth/registration.request';
+import { ForgotPasswordRequest } from '../requests/auth/forgot-password.request';
+import { PasswordResetRequest } from '../requests/auth/password-reset.request';
+import AuthService from '../../services/auth.service';
 
 @route('/auth')
 export default class AuthController {
@@ -9,6 +14,7 @@ export default class AuthController {
 
   @route('/registration')
   @POST()
+  @ValidationBody(RegistrationRequest)
   public async registration(req: Request, res: Response): Promise<void> {
     const data: { [key: string]: string } = await this.authService.registration(
       req.body,
@@ -22,6 +28,7 @@ export default class AuthController {
 
   @route('/login')
   @POST()
+  @ValidationBody(LoginRequest)
   public async login(req: Request, res: Response): Promise<void> {
     const data: { [key: string]: string } = await this.authService.login(
       req.body,
@@ -68,6 +75,7 @@ export default class AuthController {
 
   @route('/forgot-password')
   @POST()
+  @ValidationBody(ForgotPasswordRequest)
   public async forgotPassword(req: Request, res: Response): Promise<void> {
     const data: { [key: string]: string } =
       await this.authService.forgotPassword(req.body.email);
@@ -76,6 +84,7 @@ export default class AuthController {
 
   @route('/password-reset/:link')
   @POST()
+  @ValidationBody(PasswordResetRequest)
   public async passwordReset(req: Request, res: Response): Promise<void> {
     const data: { [key: string]: string } =
       await this.authService.passwordReset(req.params.link, req.body.password);

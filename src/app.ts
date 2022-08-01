@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
 import { loadControllers } from 'awilix-express';
-import { containerSetup } from './providers/service.provider';
+import { containerSetup } from './commons/providers/service.provider';
 import { appConfig } from '../config/app.config';
 import { logger } from './commons/toolkit/winston-logger.toolkit';
 import requestLoggerMiddleware from './middlewares/request-logger.middleware';
