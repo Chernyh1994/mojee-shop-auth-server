@@ -1,8 +1,11 @@
-import { UserRoleType } from '../commons/types/user-role.type';
+import { RoleType } from '../commons/types/role.type';
 
+/**
+ * Role Entity.
+ */
 export interface RoleEntity {
   id: number;
-  name: UserRoleType;
+  name: RoleType;
   description: string;
   created_at: Date;
   updated_at: Date;

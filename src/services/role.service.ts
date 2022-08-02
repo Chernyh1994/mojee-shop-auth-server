@@ -1,11 +1,31 @@
 import RoleRepository from '../repositories/role.repository';
-import { UserRoleType } from '../commons/types/user-role.type';
+import { RoleType } from '../commons/types/role.type';
 import { RoleEntity } from '../entity/role.entity';
 
+/**
+ * RoleService class.
+ */
 export default class RoleService {
-  constructor(private roleRepository: RoleRepository) {}
+  /**
+   * @constructor
+   */
+  constructor(
+    /**
+     * RoleRepository Dependency Injection.
+     *
+     * @access private
+     * @type RoleRepository
+     */
+    private roleRepository: RoleRepository,
+  ) {}
 
-  public async findOneByNameOrCreate(name: UserRoleType): Promise<RoleEntity> {
+  /**
+   * @function Find one role by name or create new role.
+   * @access public
+   * @param name:RoleType
+   * @return Promise<RoleEntity>
+   */
+  public async findOneByNameOrCreate(name: RoleType): Promise<RoleEntity> {
     let role: RoleEntity = await this.roleRepository.findOne({ name });
 
     if (!role) {

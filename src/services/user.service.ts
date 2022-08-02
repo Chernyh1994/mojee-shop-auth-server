@@ -1,28 +1,51 @@
 import * as bcrypt from 'bcrypt';
 import UserRepository from '../repositories/user.repository';
-import ForbiddenException from '../commons/exceptions/http/forbidden.exception';
 import RoleService from './role.service';
+import ForbiddenException from '../commons/exceptions/http/forbidden.exception';
 import { UserRoleValue } from '../commons/enums/user-role.enum';
+import { CreateUserDto } from '../commons/dto/services/user/create-user.dto';
 import { RoleEntity } from '../entity/role.entity';
-import { CreateUserDto } from '../commons/dto/create-user.dto';
 import { UserEntity } from '../entity/user.entity';
 
+/**
+ * UserService class.
+ */
 export default class UserService {
+  /**
+   * @constructor
+   */
   constructor(
+    /**
+     * UserRepository Dependency Injection.
+     *
+     * @access private
+     * @type UserRepository
+     */
     private userRepository: UserRepository,
+
+    /**
+     * RoleService Dependency Injection.
+     *
+     * @access private
+     * @type RoleService
+     */
     private roleService: RoleService,
   ) {}
 
-  public async createUser(createUser: CreateUserDto): Promise<any> {
+  /**
+   * @function Create a new user in the database.
+   * @access public
+   * @param createUser:CreateUserDto
+   * @return Promise<UserEntity>
+   */
+  public async createUser(createUser: CreateUserDto): Promise<UserEntity> {
     const user: UserEntity = await this.findUserByEmail(createUser.email);
 
     if (user) {
       throw new ForbiddenException('Email is not available.');
     }
 
-    const role: RoleEntity = await this.roleService.findOneByNameOrCreate(
-      UserRoleValue.USER,
-    );
+    const role: RoleEntity = await this.roleService.findOneByNameOrCreate(UserRoleValue.USER);
 
     createUser.password = await UserService.hashPassword(createUser.password);
     createUser.role_id = role.id;
@@ -30,10 +53,22 @@ export default class UserService {
     return await this.userRepository.create(createUser);
   }
 
+  /**
+   * @function Get user by email.
+   * @access public
+   * @param email:string
+   * @return Promise<UserEntity>
+   */
   public async findUserByEmail(email: string): Promise<UserEntity> {
     return await this.userRepository.findOne({ email });
   }
 
+  /**
+   * @function Activate user.
+   * @access public
+   * @param id:number
+   * @return Promise<UserEntity>
+   */
   public async verifyUser(id: number): Promise<UserEntity> {
     const user: UserEntity = await this.userRepository.findOne({ id });
 
@@ -44,7 +79,14 @@ export default class UserService {
     return await this.userRepository.update(id, { is_verified: true });
   }
 
-  public async changePassword(id: number, password: string) {
+  /**
+   * @function Change user password in the database.
+   * @access public
+   * @param id:number
+   * @param password:string
+   * @return Promise<UserEntity>
+   */
+  public async changePassword(id: number, password: string): Promise<UserEntity> {
     const user: UserEntity = await this.userRepository.findOne({ id });
 
     if (!user) {
@@ -56,6 +98,12 @@ export default class UserService {
     return await this.userRepository.update(id, { password: hashPassword });
   }
 
+  /**
+   * @function Hash user password.
+   * @access private
+   * @param password:string
+   * @return Promise<string>
+   */
   private static async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt();
 

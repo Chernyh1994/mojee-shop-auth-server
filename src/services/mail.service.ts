@@ -2,27 +2,30 @@ import * as nodemailer from 'nodemailer';
 import { Transporter } from 'nodemailer';
 import { mailConfig } from '../../config/mail.config';
 
+/**
+ * MailService class.
+ */
 export default class MailService {
+  /**
+   * Initialization Transporter.
+   *
+   * @access private
+   * @type Transporter
+   */
   private transport: Transporter;
 
   constructor() {
-    this.transport = nodemailer.createTransport({
-      host: mailConfig.host,
-      port: mailConfig.port,
-      logger: true,
-      debug: true,
-      secure: false,
-      auth: {
-        user: mailConfig.user,
-        pass: mailConfig.password,
-      },
-    });
+    this.transport = nodemailer.createTransport(mailConfig);
   }
 
-  public async sendVerificationLink(
-    emailTo: string,
-    verifyUrl: string,
-  ): Promise<void> {
+  /**
+   * @function Send verification email.
+   * @access public
+   * @param emailTo:string
+   * @param verifyUrl:string
+   * @return Promise<void>
+   */
+  public async sendVerificationLink(emailTo: string, verifyUrl: string): Promise<void> {
     await this.transport.sendMail({
       from: '"TEST" <test@test.com>',
       to: emailTo,
@@ -33,10 +36,14 @@ export default class MailService {
     });
   }
 
-  public async sendResetPassword(
-    emailTo: string,
-    restUrl: string,
-  ): Promise<void> {
+  /**
+   * @function Send reset password email.
+   * @access public
+   * @param emailTo:string
+   * @param restUrl:string
+   * @return Promise<void>
+   */
+  public async sendResetPassword(emailTo: string, restUrl: string): Promise<void> {
     await this.transport.sendMail({
       from: '"TEST" <test@test.com>',
       to: emailTo,

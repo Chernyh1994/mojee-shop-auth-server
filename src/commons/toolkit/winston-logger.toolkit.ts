@@ -1,10 +1,7 @@
 import * as winston from 'winston';
 import { Logger } from 'winston';
 import { Format } from 'logform';
-import {
-  CliConfigSetColors,
-  CliConfigSetLevels,
-} from 'winston/lib/winston/config';
+import { CliConfigSetColors, CliConfigSetLevels } from 'winston/lib/winston/config';
 import { appConfig } from '../../../config/app.config';
 
 const configSetLevels: CliConfigSetLevels = {

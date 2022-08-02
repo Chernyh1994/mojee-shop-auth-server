@@ -1,3 +1,3 @@
 import { UserRoleValue } from '../enums/user-role.enum';
 
-export type UserRoleType = keyof typeof UserRoleValue;
+export type RoleType = keyof typeof UserRoleValue;

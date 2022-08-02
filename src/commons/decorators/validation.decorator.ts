@@ -2,16 +2,8 @@ import { validate, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { HttpStatusCode } from '../enums/http-startus-code.enum';
 
-function validationFactory<T>(
-  metadataKey: symbol,
-  model: { new (...args: any[]): T },
-  source: 'body',
-) {
-  return function (
-    target: any,
-    propertyName: string,
-    descriptor: TypedPropertyDescriptor<Function>,
-  ) {
+function validationFactory<T>(metadataKey: symbol, model: { new (...args: any[]): T }, source: 'body') {
+  return function (target: any, propertyName: string, descriptor: TypedPropertyDescriptor<Function>) {
     Reflect.defineMetadata(metadataKey, model, target, propertyName);
 
     const method = descriptor.value;
@@ -23,9 +15,7 @@ function validationFactory<T>(
       const errors = await validate(plainToClass(model, plain));
 
       if (errors.length > 0) {
-        res
-          .status(HttpStatusCode.BAD_REQUEST)
-          .json(transformValidationErrorsToJSON(errors));
+        res.status(HttpStatusCode.BAD_REQUEST).json(transformValidationErrorsToJSON(errors));
 
         return;
       }
@@ -38,9 +28,7 @@ function validationFactory<T>(
 function transformValidationErrorsToJSON(errors: ValidationError[]) {
   return errors.reduce((p, c: ValidationError) => {
     if (!c.children || !c.children.length) {
-      p[c.property] = Object.keys(c.constraints).map(
-        (key) => c.constraints[key],
-      );
+      p[c.property] = Object.keys(c.constraints).map((key) => c.constraints[key]);
     } else {
       p[c.property] = transformValidationErrorsToJSON(c.children);
     }
@@ -48,5 +36,4 @@ function transformValidationErrorsToJSON(errors: ValidationError[]) {
   }, {});
 }
 
-export const ValidationBody = (request) =>
-  validationFactory(Symbol('validate-body'), request, 'body');
+export const ValidationBody = (request) => validationFactory(Symbol('validate-body'), request, 'body');
