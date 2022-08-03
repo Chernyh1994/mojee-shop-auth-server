@@ -95,7 +95,7 @@ export default class AuthController {
   @route('/verify/:link')
   @GET()
   public async verify(req: Request, res: Response): Promise<void> {
-    const link: string = req.params?.link;
+    const link: string = req.params.link;
     const responseMessage: ResponseMessageType = await this.authService.verifyUser(link);
 
     res.status(HttpStatusCode.OK).json(responseMessage);
@@ -150,7 +150,7 @@ export default class AuthController {
   @ValidationBody(PasswordResetRequest)
   public async passwordReset(req: Request, res: Response): Promise<void> {
     const passwordResetRequest: PasswordResetRequest = req.body;
-    const link: string = req.params?.link;
+    const link: string = req.params.link;
     const responseMessage: ResponseMessageType = await this.authService.passwordReset(link, passwordResetRequest);
 
     res.status(HttpStatusCode.OK).json(responseMessage);

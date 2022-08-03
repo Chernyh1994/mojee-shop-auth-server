@@ -7,16 +7,17 @@ import { mailConfig } from '../../config/mail.config';
  */
 export default class MailService {
   /**
-   * Initialization Transporter.
-   *
-   * @access private
-   * @type Transporter
+   * @constructor
    */
-  private transport: Transporter;
-
-  constructor() {
-    this.transport = nodemailer.createTransport(mailConfig);
-  }
+  constructor(
+    /**
+     * Initialization Transporter.
+     *
+     * @access private
+     * @type Transporter
+     */
+    private transport: Transporter = nodemailer.createTransport(mailConfig),
+  ) {}
 
   /**
    * @function Send verification email.
