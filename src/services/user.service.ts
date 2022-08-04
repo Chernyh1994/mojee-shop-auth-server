@@ -39,7 +39,7 @@ export default class UserService {
    * @return Promise<UserEntity>
    */
   public async createUser(createUser: CreateUserDto): Promise<UserEntity> {
-    const user: UserEntity = await this.findUserByEmail(createUser.email);
+    const user: UserEntity = await this.userRepository.findOne({ email: createUser.email });
 
     if (user) {
       throw new ForbiddenException('Email is not available.');
@@ -47,7 +47,7 @@ export default class UserService {
 
     const role: RoleEntity = await this.roleService.findOneByNameOrCreate(UserRoleValue.USER);
 
-    createUser.password = await UserService.hashPassword(createUser.password);
+    createUser.password = await this.hashPassword(createUser.password);
     createUser.role_id = role.id;
 
     return await this.userRepository.create(createUser);
@@ -93,7 +93,7 @@ export default class UserService {
       throw new ForbiddenException('User not found.');
     }
 
-    const hashPassword: string = await UserService.hashPassword(password);
+    const hashPassword: string = await this.hashPassword(password);
 
     return await this.userRepository.update(id, { password: hashPassword });
   }
@@ -104,7 +104,7 @@ export default class UserService {
    * @param password:string
    * @return Promise<string>
    */
-  private static async hashPassword(password: string): Promise<string> {
+  private async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt();
 
     return bcrypt.hash(password, salt);
