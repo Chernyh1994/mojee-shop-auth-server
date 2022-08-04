@@ -41,7 +41,7 @@ export default class TokenService {
    * @return Promise<ResponseTokensType>
    */
   public async generateTokens(userId: number): Promise<ResponseTokensType> {
-    const accessToken: string = TokenService.generateJwtAccessToken(userId);
+    const accessToken: string = this.generateJwtAccessToken(userId);
     const refreshToken: string = await this.generateRefreshToken(userId);
 
     return { accessToken, refreshToken };
@@ -68,7 +68,7 @@ export default class TokenService {
 
     token = await this.tokenRepository.update(token.id, tokenData);
 
-    const accessToken = TokenService.generateJwtAccessToken(token.user_id);
+    const accessToken = this.generateJwtAccessToken(token.user_id);
     const refreshToken = this.encryptRefreshToken(token.refresh_token);
 
     return { accessToken, refreshToken };
@@ -92,7 +92,7 @@ export default class TokenService {
    * @param userId:number
    * @return string
    */
-  private static generateJwtAccessToken(userId: number): string {
+  private generateJwtAccessToken(userId: number): string {
     return jwt.sign({ userId }, authConfig.secretAccess, { expiresIn: authConfig.expireInAccess });
   }
 

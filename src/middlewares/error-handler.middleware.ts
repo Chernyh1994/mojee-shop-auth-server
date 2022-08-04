@@ -17,8 +17,7 @@ export default function errorHandlerMiddleware(error: Error, req: Request, res: 
     status,
     error: 'Internal Server Error.',
   };
-  const routeStack: any = req.route.stack;
-  const methodName: string = routeStack[routeStack.length - 1].name;
+
   const requestBody: object = req.body;
   const copyRequestBody: any = Object.assign({}, requestBody);
 
@@ -33,9 +32,7 @@ export default function errorHandlerMiddleware(error: Error, req: Request, res: 
     message = error.serializeErrors();
   }
 
-  const log = `${JSON.stringify(message)} | method: ${methodName} | data: ${data}`;
-
-  logger.error(log);
+  logger.error(`${JSON.stringify(error.message)} | data: ${data}`);
 
   res.status(status).json(message);
 }
