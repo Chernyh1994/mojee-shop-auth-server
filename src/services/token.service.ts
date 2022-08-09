@@ -93,7 +93,7 @@ export default class TokenService {
    * @return string
    */
   private generateJwtAccessToken(userId: number): string {
-    return jwt.sign({ userId }, authConfig.secretAccess, { expiresIn: authConfig.expireInAccess });
+    return jwt.sign({ sub: userId }, authConfig.secretAccess, { expiresIn: authConfig.expireInAccess });
   }
 
   /**
